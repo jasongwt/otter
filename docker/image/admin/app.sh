@@ -94,7 +94,7 @@ function start_zookeeper() {
     su admin -c "mkdir -p /home/admin/zkData; cd /home/admin/zkData; /home/admin/zookeeper-3.4.13/bin/zkServer.sh start >> /home/admin/zkData/zookeeper.log 2>&1"
     sleep 5
     #check start
-    checkStart "zookeeper" "echo stat | nc 127.0.0.1 2181 | grep -c Outstanding" 30
+    checkStart "zookeeper" "echo stat | nc 127.0.0.1 ${zookeeper_cluster_port} | grep -c Outstanding" 30
 }
 
 function stop_zookeeper() {
@@ -120,9 +120,6 @@ function start_manager() {
         eval $cmd
 	    cmd="sed -i -e 's/^otter.port.*$/otter.port = ${port}/' /home/admin/manager/conf/otter.properties"
 	    eval $cmd
-	    zookeeper_cluster_default=127.0.0.1:${zookeeper_cluster_port}
-	    cmd="sed -i -e 's/^otter.zookeeper.cluster.default.*$/otter.zookeeper.cluster.default = ${zookeeper_cluster_default}/' /home/admin/manager/conf/otter.properties"
-        eval $cmd
 	    cmd="sed -i -e 's/^otter.communication.node.port.*$/otter.communication.manager.port = ${communication_node_port}/' /home/admin/node/conf/otter.properties"
         eval $cmd
         manager_address=127.0.0.1:${communication_manager_port}
@@ -148,7 +145,7 @@ function start_node() {
     cmd="sed -i -e 's/^otter.manager.address.*$/otter.manager.address = 127.0.0.1:${communication_manager_port}/' /home/admin/node/conf/otter.properties"
     eval $cmd
 
-    su admin -c 'cd /home/admin/node/bin/ && echo 1 > /home/admin/node/conf/nid && sh startup.sh 1>>/tmp/start.log 2>&1'
+    su admin -c 'cd /home/admin/node/bin/ && echo 1 > /home/admin/node/conf/nid && sh startup.sh 2>&1'
     sleep 5
     #check start
     checkStart "node" "nc 127.0.0.1 ${communication_node_port} -w 1 -z | wc -l" 30
@@ -184,7 +181,7 @@ function start_mysql() {
         checkStart "mysql" "echo 'show status' | mysql -s -h127.0.0.1 -P3306 -uroot | grep -c Uptime" 30
         mysql -h127.0.0.1 -uroot -e "source $TEMP_FILE" 1>>/tmp/start.log 2>&1
 
-        cmd="sed -i -e 's/#OTTER_MY_ZK#/127.0.0.1:2181/' /home/admin/bin/ddl.sql"
+        cmd="sed -i -e 's/#OTTER_MY_ZK#/127.0.0.1:${zookeeper_cluster_port}/' /home/admin/bin/ddl.sql"
         eval $cmd
         cmd="sed -i -e 's/#OTTER_NODE_HOST#/127.0.0.1/' /home/admin/bin/ddl.sql"
         eval $cmd
