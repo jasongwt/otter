@@ -120,11 +120,12 @@ function start_manager() {
         eval $cmd
 	    cmd="sed -i -e 's/^otter.port.*$/otter.port = ${port}/' /home/admin/manager/conf/otter.properties"
 	    eval $cmd
-	    cmd="sed -i -e 's/^otter.zookeeper.cluster.default.*$/otter.zookeeper.cluster.default = ${zookeeper_cluster_port}/' /home/admin/manager/conf/otter.properties"
+	    zookeeper_cluster_default=127.0.0.1:${zookeeper_cluster_port}
+	    cmd="sed -i -e 's/^otter.zookeeper.cluster.default.*$/otter.zookeeper.cluster.default = ${zookeeper_cluster_default}/' /home/admin/manager/conf/otter.properties"
         eval $cmd
 	    cmd="sed -i -e 's/^otter.communication.node.port.*$/otter.communication.manager.port = ${communication_node_port}/' /home/admin/node/conf/otter.properties"
         eval $cmd
-        manager_address='127.0.0.1:'${communication_manager_port}
+        manager_address=127.0.0.1:${communication_manager_port}
         cmd="sed -i -e 's/^otter.manager.address.*$/otter.manager.address = ${manager_address}/' /home/admin/node/conf/otter.properties"
         eval $cmd
     fi
