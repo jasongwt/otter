@@ -25,6 +25,7 @@
 	</bean>
 	 -->
 	<bean id="endpoint" class="com.alibaba.otter.shared.communication.core.impl.dubbo.DubboCommunicationEndpoint">
+		<property name="port" value="${otter.communication.node.port:2088}" />
 		<property name="payload" value="${otter.communication.payload:8388608}" />
 	</bean>
 	<bean id="communicationClient" class="com.alibaba.otter.shared.communication.core.impl.DefaultCommunicationClientImpl" init-method="initial" destroy-method="destory">

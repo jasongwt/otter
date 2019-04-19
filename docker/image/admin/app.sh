@@ -114,15 +114,24 @@ function start_manager() {
         eval $cmd
         cmd="sed -i -e 's/^otter.database.driver.password.*$/otter.database.driver.password = ${MYSQL_USER_PASSWORD}/' /home/admin/manager/conf/otter.properties"
         eval $cmd
-        cmd="sed -i -e 's/^otter.communication.manager.port.*$/otter.communication.manager.port = 8081/' /home/admin/manager/conf/otter.properties"
+        cmd="sed -i -e 's/^otter.communication.manager.port.*$/otter.communication.manager.port = ${communication_manager_port}/' /home/admin/manager/conf/otter.properties"
         eval $cmd
         cmd="sed -i -e 's/^otter.domainName.*$/otter.domainName = ${host}/' /home/admin/manager/conf/otter.properties"
+        eval $cmd
+	    cmd="sed -i -e 's/^otter.port.*$/otter.port = ${port}/' /home/admin/manager/conf/otter.properties"
+	    eval $cmd
+	    cmd="sed -i -e 's/^otter.zookeeper.cluster.default.*$/otter.zookeeper.cluster.default = ${zookeeper_cluster_port}/' /home/admin/manager/conf/otter.properties"
+        eval $cmd
+	    cmd="sed -i -e 's/^otter.communication.node.port.*$/otter.communication.manager.port = ${communication_node_port}/' /home/admin/node/conf/otter.properties"
+        eval $cmd
+        manager_address='127.0.0.1:'${communication_manager_port}
+        cmd="sed -i -e 's/^otter.manager.address.*$/otter.manager.address = ${manager_address}/' /home/admin/node/conf/otter.properties"
         eval $cmd
     fi
     su admin -c "cd /home/admin/manager/bin ; sh startup.sh 1>>/tmp/start.log 2>&1"
     #check start
     sleep 5
-    checkStart "manager" "nc 127.0.0.1 8080 -w 1 -z | wc -l" 60
+    checkStart "manager" "nc 127.0.0.1 ${port} -w 1 -z | wc -l" 60
 }
 
 function stop_manager() {
@@ -135,13 +144,13 @@ function stop_manager() {
 function start_node() {
     echo "start node ..."
     # start node
-    cmd="sed -i -e 's/^otter.manager.address.*$/otter.manager.address = 127.0.0.1:8081/' /home/admin/node/conf/otter.properties"
+    cmd="sed -i -e 's/^otter.manager.address.*$/otter.manager.address = 127.0.0.1:${communication_manager_port}/' /home/admin/node/conf/otter.properties"
     eval $cmd
-    
+
     su admin -c 'cd /home/admin/node/bin/ && echo 1 > /home/admin/node/conf/nid && sh startup.sh 1>>/tmp/start.log 2>&1'
     sleep 5
     #check start
-    checkStart "node" "nc 127.0.0.1 2088 -w 1 -z | wc -l" 30
+    checkStart "node" "nc 127.0.0.1 ${communication_node_port} -w 1 -z | wc -l" 30
 }
 
 function stop_node() {
@@ -201,7 +210,7 @@ start_mysql
 start_zookeeper
 start_manager
 start_node
-echo "you can visit manager link : http://$host:8080/ , just have fun !"
+echo "you can visit manager link : http://$host:${port}/ , just have fun !"
 
 echo "==> START SUCCESSFUL ..."
 

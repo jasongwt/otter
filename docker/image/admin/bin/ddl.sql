@@ -298,4 +298,4 @@ insert into USER(ID,USERNAME,PASSWORD,AUTHORIZETYPE,DEPARTMENT,REALNAME,GMT_CREA
 insert into USER(ID,USERNAME,PASSWORD,AUTHORIZETYPE,DEPARTMENT,REALNAME,GMT_CREATE,GMT_MODIFIED) values(null,'guest','471e02a154a2121dc577','OPERATOR','guest','guest',now(),now());
 
 replace into AUTOKEEPER_CLUSTER(ID,CLUSTER_NAME,SERVER_LIST,DESCRIPTION,GMT_CREATE,GMT_MODIFIED) values(1,'default','["#OTTER_MY_ZK#"]',NULL,now(),now());
-replace into NODE(ID,NAME,IP,PORT,DESCRIPTION,PARAMETERS,GMT_CREATE,GMT_MODIFIED) values(1,'default','#OTTER_NODE_HOST#',2088,NULL,'{"downloadPort":2089,"mbeanPort":2090,"useExternalIp":false,"zkCluster":{"clusterName":"default","id":1}}', now(), now());
+replace into NODE(ID,NAME,IP,PORT,DESCRIPTION,PARAMETERS,GMT_CREATE,GMT_MODIFIED) values(1,'default','#OTTER_NODE_HOST#',11314,NULL,'{"downloadPort":11315,"mbeanPort":11316,"useExternalIp":false,"zkCluster":{"clusterName":"default","id":1}}', now(), now());
