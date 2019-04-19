@@ -4,7 +4,7 @@ function usage() {
     echo "Usage:"
     echo "  run.sh [CONFIG]"
     echo "example:"
-    echo "  run.sh NODE -e OTTER_MANAGER=127.0.0.1:8080"
+    echo "  run.sh NODE -e OTTER_MANAGER=127.0.0.1:11311"
     exit
 }
 
@@ -65,7 +65,6 @@ mkdir -p $DATA
 RUN_MODE=$1
 CONFIG=${@:2}
 VOLUMNS="-v $DATA/mysql:/var/lib/mysql -v $DATA/zkData:/home/admin/zkData"
-#PORTLIST="8080 8081 2088 2089 2090"
 PORTLIST="11311 11312 11314 11315 11316"
 
 PORTS=""
@@ -81,6 +80,5 @@ for PORT in $PORTLIST ; do
 done
 MEMORY="-m 4096m"
 LOCALHOST=`getMyIp`
-cmd="docker run -d -it -h $LOCALHOST $CONFIG --name=otter-all $VOLUMNS $NET_MODE $PORTS $MEMORY canal/otter-all"
-echo $cmd
+cmd="docker run -d -h $LOCALHOST $CONFIG -e port=11311 -e communication_manager_port=11312 -e communication_node_port=11315  --name=otter-all $VOLUMNS --net=bridge -p 11311:11311 -p 11312:11312 -p 11314:11314 -p 11315:11315 -p 11316:11316 $MEMORY canal/otter-all:latest"
 eval $cmd

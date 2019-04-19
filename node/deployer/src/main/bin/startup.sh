@@ -114,10 +114,10 @@ then
 	echo Otter nodeId file : $otterNodeIdFile 
 	echo CLASSPATH :$CLASSPATH
 
-  echo "cd to $bin_abs_path for workaround relative path"
-  cd $bin_abs_path
+    echo "cd to $bin_abs_path for workaround relative path"
+    cd $bin_abs_path
 
-	$JAVA $JAVA_OPTS $JAVA_DEBUG_OPT $OTTER_OPTS -classpath .:$CLASSPATH com.alibaba.otter.node.deployer.OtterLauncher 2>&1
+	$JAVA $JAVA_OPTS $JAVA_DEBUG_OPT $OTTER_OPTS -classpath .:$CLASSPATH com.alibaba.otter.node.deployer.OtterLauncher 1>>$base/logs/node/node.log 2>&1 &
 	echo $! > $base/bin/otter.pid 
 
   echo "cd to $current_path for continue"
