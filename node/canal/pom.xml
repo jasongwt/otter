@@ -50,9 +50,14 @@
 				</exclusion>
 				<exclusion>
 					<groupId>org.apache.kafka</groupId>
-					<artifactId>kafka_2.11</artifactId>				
+					<artifactId>kafka_2.11</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba.otter</groupId>
+			<artifactId>canal.prometheus</artifactId>
+			<version>${otter_canal_version}</version>
 		</dependency>
 		<!-- test dependency -->
 		<dependency>
