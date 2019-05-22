@@ -4,8 +4,8 @@ set -e
 source /etc/profile
 export JAVA_HOME=/usr/java/latest
 export PATH=$JAVA_HOME/bin:$PATH
-touch /tmp/start.log
-chown admin: /tmp/start.log
+touch /home/admin/node/start.log
+chown admin: /home/admin/node/start.log
 chown admin: /home/admin/manager
 chown admin: /home/admin/node
 chown admin: /home/admin/zkData
@@ -126,7 +126,7 @@ function start_manager() {
         cmd="sed -i -e 's/^otter.manager.address.*$/otter.manager.address = ${manager_address}/' /home/admin/node/conf/otter.properties"
         eval $cmd
     fi
-    su admin -c "cd /home/admin/manager/bin ; sh startup.sh 1>>/tmp/start.log 2>&1"
+    su admin -c "cd /home/admin/manager/bin ; sh startup.sh 1>>/home/admin/node/start.log 2>&1"
     #check start
     sleep 5
     checkStart "manager" "nc 127.0.0.1 ${port} -w 1 -z | wc -l" 60
@@ -135,7 +135,7 @@ function start_manager() {
 function stop_manager() {
     # stop manager
     echo "stop manager"
-    su admin -c 'cd /home/admin/manager/bin; sh stop.sh 1>>/tmp/start.log 2>&1'
+    su admin -c 'cd /home/admin/manager/bin; sh stop.sh 1>>/home/admin/node/start.log 2>&1'
     echo "stop manager successful ..."
 }
 
@@ -145,7 +145,7 @@ function start_node() {
     cmd="sed -i -e 's/^otter.manager.address.*$/otter.manager.address = 127.0.0.1:${communication_manager_port}/' /home/admin/node/conf/otter.properties"
     eval $cmd
 
-    su admin -c 'cd /home/admin/node/bin/ && echo 1 > /home/admin/node/conf/nid && sh startup.sh 1>>/tmp/start.log 2>&1'
+    su admin -c 'cd /home/admin/node/bin/ && echo 1 > /home/admin/node/conf/nid && sh startup.sh 1>>/home/admin/node/start.log 2>&1'
     sleep 5
     #check start
     checkStart "node" "nc 127.0.0.1 ${communication_node_port} -w 1 -z | wc -l" 30
@@ -165,7 +165,7 @@ function start_mysql() {
     MYSQL_USER=otter
     MYSQL_DATABASE=otter
     if [ -z "$(ls -A /var/lib/mysql)" ]; then
-        mysql_install_db --user=mysql --datadir=/var/lib/mysql 1>>/tmp/start.log 2>&1
+        mysql_install_db --user=mysql --datadir=/var/lib/mysql 1>>/home/admin/node/start.log 2>&1
         # These statements _must_ be on individual lines, and _must_ end with
         # semicolons (no line breaks or comments are permitted).
         # TODO proper SQL escaping on ALL the things D:
@@ -179,13 +179,13 @@ function start_mysql() {
         echo "flush privileges;" >> $TEMP_FILE
         service mysqld start
         checkStart "mysql" "echo 'show status' | mysql -s -h127.0.0.1 -P3306 -uroot | grep -c Uptime" 30
-        mysql -h127.0.0.1 -uroot -e "source $TEMP_FILE" 1>>/tmp/start.log 2>&1
+        mysql -h127.0.0.1 -uroot -e "source $TEMP_FILE" 1>>/home/admin/node/start.log 2>&1
 
         cmd="sed -i -e 's/#OTTER_MY_ZK#/127.0.0.1:2181/' /home/admin/bin/ddl.sql"
         eval $cmd
         cmd="sed -i -e 's/#OTTER_NODE_HOST#/127.0.0.1/' /home/admin/bin/ddl.sql"
         eval $cmd
-        cmd="mysql -h127.0.0.1 -u$MYSQL_USER -p$MYSQL_USER_PASSWORD $MYSQL_DATABASE -e 'source /home/admin/bin/ddl.sql' 1>>/tmp/start.log 2>&1"
+        cmd="mysql -h127.0.0.1 -u$MYSQL_USER -p$MYSQL_USER_PASSWORD $MYSQL_DATABASE -e 'source /home/admin/bin/ddl.sql' 1>>/home/admin/node/start.log 2>&1"
         eval $cmd
         /bin/rm -f /home/admin/bin/ddl.sql
     else
