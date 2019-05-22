@@ -16,8 +16,6 @@
 
 package com.alibaba.otter.manager.deployer;
 
-import com.alibaba.otter.canal.spi.CanalMetricsService;
-import com.alibaba.otter.canal.spi.NopCanalMetricsService;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.util.resource.Resource;
