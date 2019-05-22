@@ -31,21 +31,6 @@
 			<artifactId>manager.biz</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>com.alibaba.otter</groupId>
-			<artifactId>canal.server</artifactId>
-			<version>${otter_canal_version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.springframework</groupId>
-					<artifactId>spring</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.apache.kafka</groupId>
-					<artifactId>kafka_2.11</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
 	</dependencies>
 	
 	<build>

@@ -207,6 +207,7 @@ public class CanalEmbedSelector implements OtterSelector {
                 return instance;
             }
         });
+        canalServer.setMetricsPort(11316);
         canalServer.start();
 
         canalServer.start(destination);
