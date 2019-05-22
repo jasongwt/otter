@@ -97,7 +97,7 @@ then
 	echo LOG CONFIGURATION : $logback_configurationFile
 	echo otter conf : $otter_conf 
 	echo CLASSPATH :$CLASSPATH
-	$JAVA $JAVA_OPTS $JAVA_DEBUG_OPT $OTTER_OPTS -classpath .:$CLASSPATH com.alibaba.otter.manager.deployer.OtterManagerLauncher 1>>$base/logs/manager.log 2>&1 &
+	$JAVA $JAVA_OPTS $JAVA_DEBUG_OPT $OTTER_OPTS -classpath .:$CLASSPATH com.alibaba.otter.manager.deployer.OtterManagerLauncher 1>>/home/admin/node/manager.log 2>&1 &
 	echo $! > $base/bin/otter.pid 
 	
 	echo "cd to $current_path for continue"
