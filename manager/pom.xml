@@ -16,7 +16,6 @@
 		<module>biz</module>
 		<module>web</module>
 		<module>deployer</module>
-		<module>prometheus</module>
 	</modules>
 	
 	<properties>
