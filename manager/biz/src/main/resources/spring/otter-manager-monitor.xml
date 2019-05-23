@@ -18,6 +18,8 @@
      	<property name="enable" value="${otter.manager.monitor.self.enable:true}" />
      	<property name="interval" value="${otter.manager.monitor.self.interval:120}" />
      	<property name="monitor" ref="globalMonitor" />
+        <property name="positionMonitor" ref="positionMonitor" />
+        <property name="monitorPort" value="${otter.manager.monitor.server.port:11316}" />
      </bean>
      
      <bean id="pipelineMonitor" class="com.alibaba.otter.manager.biz.monitor.impl.PipelineMonitor" />
@@ -27,7 +29,10 @@
      <bean id="pipelineTimeoutRuleMonitor" class="com.alibaba.otter.manager.biz.monitor.impl.PipelineTimeoutRuleMonitor" />
      <bean id="processTimeoutRuleMonitor" class="com.alibaba.otter.manager.biz.monitor.impl.ProcessTimeoutRuleMonitor" />
      <bean id="positionTimeoutRuleMonitor" class="com.alibaba.otter.manager.biz.monitor.impl.PositionTimeoutRuleMonitor" />
-     
+     <bean id="positionMonitor" class="com.alibaba.otter.manager.biz.monitor.impl.PositionMonitor" />
+
+
+
      <bean id="alarmController" class="com.alibaba.otter.manager.biz.monitor.impl.DefaultAlarmController" />
      <bean id="restartAlarmRecovery"  class="com.alibaba.otter.manager.biz.monitor.impl.RestartAlarmRecovery" />
 </beans>

@@ -8,6 +8,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import io.prometheus.client.exporter.HTTPServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
@@ -30,6 +31,9 @@ public class SelfMonitor implements Monitor, InitializingBean, DisposableBean {
     private ScheduledExecutorService executor;
     private ScheduledFuture          future;
     private GlobalMonitor            monitor;
+    private PositionMonitor          positionMonitor;
+    private HTTPServer httpServer;
+    private int monitorPort = 11316;
     private AtomicBoolean            enable       = new AtomicBoolean(true);
     private int                      interval     = 120;
 
@@ -58,6 +62,13 @@ public class SelfMonitor implements Monitor, InitializingBean, DisposableBean {
     }
 
     private synchronized void start() {
+        if (httpServer == null) {
+            try {
+                httpServer = new HTTPServer(monitorPort);
+            }catch (Exception e){
+                log.error("start http server error {}",e);
+            }
+        }
         if (executor == null) {
             executor = new ScheduledThreadPoolExecutor(DEFAULT_POOL, new NamedThreadFactory("Self-Monitor"),
                                                        new ThreadPoolExecutor.CallerRunsPolicy());
@@ -67,7 +78,12 @@ public class SelfMonitor implements Monitor, InitializingBean, DisposableBean {
 
                 public void run() {
                     try {
-                        monitor.explore();// 定时调用 
+                        monitor.explore();// 定时调用
+                        if (positionMonitor != null){
+                            positionMonitor.explore();
+                        }else {
+                            log.error("positionMonitor is null");
+                        }
                     } catch (Exception e) {
                         log.error("self-monitor failed.", e);
                     }
@@ -102,4 +118,11 @@ public class SelfMonitor implements Monitor, InitializingBean, DisposableBean {
         this.interval = interval;
     }
 
+    public void setPositionMonitor(PositionMonitor positionMonitor) {
+        this.positionMonitor = positionMonitor;
+    }
+
+    public void setMonitorPort(int monitorPort) {
+        this.monitorPort = monitorPort;
+    }
 }
