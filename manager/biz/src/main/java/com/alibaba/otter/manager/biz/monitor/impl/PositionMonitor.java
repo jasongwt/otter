@@ -12,6 +12,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -48,15 +49,11 @@ public class PositionMonitor implements Monitor {
 
     private void exploreSingle(Pipeline pipeline){
 
-        MetricService.getInstance().metric(0L, RandomUtils.nextLong());
-
         PositionEventData positionData = arbitrateViewService.getCanalCursor(pipeline.getParameters().getDestinationName(),
                 pipeline.getParameters().getMainstemClientId());
-        if (positionData != null && StringUtils.isNotEmpty(positionData.getPosition())) {
-            JSONObject position = JSONObject.parseObject(positionData.getPosition());
-            if (position != null){
-                MetricService.getInstance().metric(pipeline.getId(),position.getLong("timestamp"));
-            }
+
+        if (positionData != null && positionData.getModifiedTime() != null) {
+            MetricService.getInstance().metric(pipeline.getId(),positionData.getModifiedTime().getTime());
         }
     }
 
