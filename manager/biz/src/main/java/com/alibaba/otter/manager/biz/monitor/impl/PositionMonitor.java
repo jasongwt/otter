@@ -9,9 +9,11 @@ import com.alibaba.otter.shared.arbitrate.model.PositionEventData;
 import com.alibaba.otter.shared.common.model.config.alarm.AlarmRule;
 import com.alibaba.otter.shared.common.model.config.pipeline.Pipeline;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.RandomUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by sunpengfei on 2019/5/23.
@@ -45,6 +47,9 @@ public class PositionMonitor implements Monitor {
     }
 
     private void exploreSingle(Pipeline pipeline){
+
+        MetricService.getInstance().metric(0L, RandomUtils.nextLong());
+
         PositionEventData positionData = arbitrateViewService.getCanalCursor(pipeline.getParameters().getDestinationName(),
                 pipeline.getParameters().getMainstemClientId());
         if (positionData != null && StringUtils.isNotEmpty(positionData.getPosition())) {

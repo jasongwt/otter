@@ -36,7 +36,7 @@ public class SelfMonitor implements Monitor, InitializingBean, DisposableBean {
     private int monitorPort = 11317;
     private AtomicBoolean            enable       = new AtomicBoolean(true);
     private int                      interval     = 120;
-
+    private int                      delay     = 300;
     public void explore() {
         monitor.explore();
     }
@@ -88,7 +88,7 @@ public class SelfMonitor implements Monitor, InitializingBean, DisposableBean {
                         log.error("self-monitor failed.", e);
                     }
                 }
-            }, interval, interval, TimeUnit.SECONDS);
+            }, delay, interval, TimeUnit.SECONDS);
         }
     }
 
