@@ -56,8 +56,8 @@ public class PositionMonitor implements Monitor {
             log.info("position:{}",positionData.getPosition());
             if (StringUtils.isNotEmpty(positionData.getPosition())){
                 LogPosition logPosition = JSON.parseObject(positionData.getPosition(), LogPosition.class);
-                MetricService.getInstance().metricPosition(pipeline.getId(), logPosition.getPostion().getPosition());
-                MetricService.getInstance().metricTimeStamp(pipeline.getId(), logPosition.getPostion().getTimestamp());
+                MetricService.getInstance().metricPosition(pipeline.getName(), logPosition.getPostion().getPosition());
+                MetricService.getInstance().metricTimeStamp(pipeline.getName(), logPosition.getPostion().getTimestamp());
             }
         }
     }

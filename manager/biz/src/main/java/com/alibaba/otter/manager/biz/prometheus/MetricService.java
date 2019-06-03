@@ -23,22 +23,22 @@ public class MetricService {
     private static final String HANDLE_TIME_PREFIX = "handle_time_";
     private static final String HANDLE_POSITION_PREFIX = "handle_position_";
 
-    public void metricTimeStamp(Long id, long timestamp){
-        Gauge gauge = gaugeMap.get(HANDLE_TIME_PREFIX+id);
+    public void metricTimeStamp(String name, long timestamp){
+        Gauge gauge = gaugeMap.get(HANDLE_TIME_PREFIX+name);
         if (gauge == null){
             gauge = Gauge.build()
-                    .name(HANDLE_TIME_PREFIX+id).help("latest handle timestamp.").register();
-            gaugeMap.put(HANDLE_TIME_PREFIX+id, gauge);
+                    .name(HANDLE_TIME_PREFIX+name).help("latest handle timestamp.").register();
+            gaugeMap.put(HANDLE_TIME_PREFIX+name, gauge);
         }
         gauge.set(timestamp);
     }
 
-    public void metricPosition(Long id, long position){
-        Gauge gauge = gaugeMap.get(HANDLE_POSITION_PREFIX+id);
+    public void metricPosition(String name, long position){
+        Gauge gauge = gaugeMap.get(HANDLE_POSITION_PREFIX+name);
         if (gauge == null){
             gauge = Gauge.build()
-                    .name(HANDLE_POSITION_PREFIX+id).help("latest handle position.").register();
-            gaugeMap.put(HANDLE_POSITION_PREFIX+id, gauge);
+                    .name(HANDLE_POSITION_PREFIX+name).help("latest handle position.").register();
+            gaugeMap.put(HANDLE_POSITION_PREFIX+name, gauge);
         }
         gauge.set(position);
     }
