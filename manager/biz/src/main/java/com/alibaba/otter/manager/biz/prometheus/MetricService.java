@@ -12,7 +12,7 @@ public class MetricService {
 
     private static volatile MetricService instance = new MetricService();
 
-    private Map<Long,Gauge> gaugeMap = new HashMap<Long,Gauge>();
+    private Map<String,Gauge> gaugeMap = new HashMap<String,Gauge>();
 
     private MetricService(){}
 
@@ -20,13 +20,26 @@ public class MetricService {
         return instance;
     }
 
-    public void metric(Long id, long timestamp){
-        Gauge gauge = gaugeMap.get(id);
+    private static final String HANDLE_TIME_PREFIX = "_handle_time";
+    private static final String HANDLE_POSITION_PREFIX = "_handle_position";
+
+    public void metricTimeStamp(Long id, long timestamp){
+        Gauge gauge = gaugeMap.get(id+HANDLE_TIME_PREFIX);
         if (gauge == null){
             gauge = Gauge.build()
-                    .name("latest_handle_"+id).help("latest handle timestamp.").register();
-            gaugeMap.put(id, gauge);
+                    .name(id+HANDLE_TIME_PREFIX).help("latest handle timestamp.").register();
+            gaugeMap.put(id+HANDLE_TIME_PREFIX, gauge);
         }
         gauge.set(timestamp);
+    }
+
+    public void metricPosition(Long id, long position){
+        Gauge gauge = gaugeMap.get(id+HANDLE_POSITION_PREFIX);
+        if (gauge == null){
+            gauge = Gauge.build()
+                    .name(id+HANDLE_POSITION_PREFIX).help("latest handle position.").register();
+            gaugeMap.put(id+HANDLE_POSITION_PREFIX, gauge);
+        }
+        gauge.set(position);
     }
 }
