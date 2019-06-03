@@ -20,8 +20,8 @@ public class MetricService {
         return instance;
     }
 
-    private static final String HANDLE_TIME_PREFIX = "_handle_time";
-    private static final String HANDLE_POSITION_PREFIX = "_handle_position";
+    private static final String HANDLE_TIME_PREFIX = "handle_time_";
+    private static final String HANDLE_POSITION_PREFIX = "handle_position_";
 
     public void metricTimeStamp(Long id, long timestamp){
         Gauge gauge = gaugeMap.get(HANDLE_TIME_PREFIX+id);
