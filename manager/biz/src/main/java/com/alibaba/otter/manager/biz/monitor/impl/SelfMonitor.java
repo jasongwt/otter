@@ -33,7 +33,7 @@ public class SelfMonitor implements Monitor, InitializingBean, DisposableBean {
     private GlobalMonitor            monitor;
     private PositionMonitor          positionMonitor;
     private HTTPServer httpServer;
-    private int monitorPort = 11317;
+    private int monitorPort = 11319;
     private AtomicBoolean            enable       = new AtomicBoolean(true);
     private int                      interval     = 120;
     private int                      delay     = 300;

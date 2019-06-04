@@ -125,6 +125,8 @@ function start_manager() {
         manager_address=127.0.0.1:${communication_manager_port}
         cmd="sed -i -e 's/^otter.manager.address.*$/otter.manager.address = ${manager_address}/' /home/admin/node/conf/otter.properties"
         eval $cmd
+        cmd="sed -i -e 's/^otter.manager.monitor.server.port.*$/otter.manager.monitor.server.port = ${manager_monitor_port}/' /home/admin/manager/conf/otter.properties"
+        eval $cmd
     fi
     su admin -c "cd /home/admin/manager/bin ; sh startup.sh 1>>/home/admin/node/start.log 2>&1"
     #check start

@@ -19,7 +19,7 @@
      	<property name="interval" value="${otter.manager.monitor.self.interval:120}" />
      	<property name="monitor" ref="globalMonitor" />
         <property name="positionMonitor" ref="positionMonitor" />
-        <property name="monitorPort" value="${otter.manager.monitor.server.port:11317}" />
+        <property name="monitorPort" value="${otter.manager.monitor.server.port:11319}" />
      </bean>
      
      <bean id="pipelineMonitor" class="com.alibaba.otter.manager.biz.monitor.impl.PipelineMonitor" />

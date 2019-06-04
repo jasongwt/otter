@@ -65,7 +65,7 @@ mkdir -p $DATA
 RUN_MODE=$1
 CONFIG=${@:2}
 VOLUMNS="-v $DATA/mysql:/var/lib/mysql -v $DATA/zkData:/home/admin/zkData"
-PORTLIST="11311 11312 11314 11315 11316 11317"
+PORTLIST="11311 11312 11314 11315 11316 11319"
 
 PORTS=""
 for PORT in $PORTLIST ; do
@@ -80,5 +80,5 @@ for PORT in $PORTLIST ; do
 done
 MEMORY="-m 4096m"
 LOCALHOST=`getMyIp`
-cmd="docker run -d -h $LOCALHOST $CONFIG -e port=11311 -e communication_manager_port=11312 -e communication_node_port=11315  --name=otter-all $VOLUMNS --net=bridge -p 11311:11311 -p 11312:11312 -p 11314:11314 -p 11315:11315 -p 11316:11316 -p 11317:11317 $MEMORY canal/otter-all:latest"
+cmd="docker run -d -h $LOCALHOST $CONFIG -e port=11311 -e communication_manager_port=11312 -e communication_node_port=11315  --name=otter-all $VOLUMNS --net=bridge -p 11311:11311 -p 11312:11312 -p 11314:11314 -p 11315:11315 -p 11316:11316 -p 11319:11319 $MEMORY canal/otter-all:latest"
 eval $cmd
